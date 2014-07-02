@@ -19,6 +19,11 @@ def create_version_on_save(context, event):
     # only version the modified object, not its container on modification
     if IContainerModifiedEvent.providedBy(event):
         return
+    
+    #aliases should not be versioned at all
+    if hasattr(context.aq_base, '_alias_portal_type'):
+        return
+
 
     # XXX dirty hack for stagingbehavior, which triggers a event with
     # a aq_based context when deleting the working copy
